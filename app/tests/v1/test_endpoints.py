@@ -92,3 +92,19 @@ class TestEndpoints(unittest.TestCase):
                                             'content-type': 'application/json'
                                             })
         self.assertEqual(response.status_code, 200)
+
+    def test_post_product(self):
+        response = self.test_client.post("storemanager/api/v1/products",
+                                         data=json.dumps({
+                                            'name': 'minji',
+                                            'category': 'food',
+                                            'desc': 'great food',
+                                            'currstock': 200,
+                                            'minstock': 20,
+                                            'price': 30
+                                            }),
+                                         headers={
+                                            'content-type': 'application/json',
+                                            "x-access-token": self.token_for_admin
+                                            })
+        self.assertEqual(response.status_code, 201)
