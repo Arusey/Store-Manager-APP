@@ -21,12 +21,22 @@ class TestEndpoints(unittest.TestCase):
             "/storemanager/api/v1/auth/signup",
             data=self.user_admin_details, headers={
                 'content-type': 'application/json'})
+        self.user_attendant_details = json.dumps({
+                "name": "brian",
+                "email": "brian@email.com",
+                "password": "brian",
+                "role": "attendant"
+            })
+        attendant_signup = self.test_client.post("/storemanager/api/v1/auth/signup",
+                                                     data=self.user_attendant_details,
+                                                     headers={
+                                                        'content-type': 'application/json'
+                                                        })
 
     def tearDown(self):
         """removes all the context and dicts"""
-        print(collapse)
         collapse()
-        self.app_context.pop()
+        # self.app_context.pop()
     def test_signup(self):
         response = self.test_client.post("/storemanager/api/v1/auth/signup",
                                          data=self.user_admin_details,
