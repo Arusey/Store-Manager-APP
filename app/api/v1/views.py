@@ -75,6 +75,22 @@ class SingleProduct(Resource):
                     "Product": product
                 }
                 ), 200)
+class SingleSale(Resource):
+    @token_required
+    def get(current_user, self, saleid):
+        if current_user['role'] != "admin":
+            return make_response(jsonify({
+                "Message": "You cannot access this endpoint"
+            }
+            ), 401)
+        for sale in sales:
+            if saleid == sale["saleid"]:
+                return make_response(jsonify({
+                    "Status": "Sale found",
+                    "Message": "Single sale retrieved",
+                    "Sale": saleid
+                }
+                ), 200)
 
 
 class Sale(Resource):
