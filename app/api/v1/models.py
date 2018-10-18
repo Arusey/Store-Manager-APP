@@ -46,3 +46,5 @@ class PostProduct():
 
 def collapse():
     users = []
+    products = []
+    sales = []
