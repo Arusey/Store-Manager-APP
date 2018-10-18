@@ -121,3 +121,6 @@ class TestEndpoints(unittest.TestCase):
     def test_get_all_sales(self):
         response = self.test_client.get("storemanager/api/v1/sales")
         self.assertEqual(response.status_code, 200)
+    def test_get_all_products(self):
+        response = self.test_client.get("storemanager/api/v1/products")
+        self.assertEqual(response.status_code, 200)

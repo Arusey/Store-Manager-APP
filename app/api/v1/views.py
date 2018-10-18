@@ -107,15 +107,6 @@ class Sale(Resource):
                     "Message": "items have run out"
 
                 }), 404)
-# class Sale(Resource):
-#     def get(self):
-#         return make_response(jsonify({
-#             "Status": "ok",
-#             "Message": "All products fetched successfully",
-#             "sales": sales
-#         }
-#         ))
-
 
 class SignUp(Resource):
     def post(self):
