@@ -1,5 +1,6 @@
 users = []
 products = []
+sales = []
 
 class UserAuth():
     def __init__(self, name, email, password, role):

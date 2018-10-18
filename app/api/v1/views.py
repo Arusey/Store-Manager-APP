@@ -58,6 +58,56 @@ class Product(Resource):
         }
         ), 201)
 
+class Sale(Resource):
+    def get(self):
+        return make_response(jsonify({
+            "Status": "ok",
+            "Message": "All products fetched successfully",
+            "sales": sales
+        }
+        ))
+
+    @token_required
+    def post(current_user, self):
+        total = 0
+        data = request.get_json()
+        print(data)
+        if current_user["role"] != "attendant":
+            return make_response(jsonify({
+                "Message": "You must be an attendant to access this endpoint"
+            }
+            ))
+        id = data['id']
+        for product in products:
+            if product["currstock"] > 0:
+                if product["id"] == id:
+                    sale = {
+                        "saleid": len(sales) + 1,
+                        "product": product
+                    }
+                    product["currstock"] = product["currstock"] - 1
+                    sales.append(sale)
+                    for sale in sales:
+                        if product["id"] in sale.values():
+                            total = total + int(product["price"])
+                    return make_response(jsonify({
+                        "Status": "ok",
+                        "Message": "sale is successfull",
+                        "Sales": sales,
+                        "total cost": total
+                    }), 201)
+                else:
+                    return make_response(jsonify({
+                        "Status": "non-existent",
+                        "Message": "item not found"
+                        }), 404)
+            else:
+                return make_response(jsonify({
+                    "Status": "not found",
+                    "Message": "items have run out"
+
+                }), 404)
+
 class SignUp(Resource):
     def post(self):
         data = request.get_json()
