@@ -108,3 +108,13 @@ class TestEndpoints(unittest.TestCase):
                                             "x-access-token": self.token_for_admin
                                             })
         self.assertEqual(response.status_code, 201)
+    def test_post_sale(self):
+        data = json.dumps({
+            "id": 1
+            })
+        response = self.test_client.post("storemanager/api/v1/sales",
+                                         data=data, headers={
+                                             'content-type': 'application/json',
+                                             'x-access-token': self.token_for_attendant
+                                             })
+        self.assertEqual(response.status_code, 201)
