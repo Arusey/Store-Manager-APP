@@ -3,5 +3,4 @@
 *__pycache__
 /env
 .coverage
-requirements.txt
 .env
