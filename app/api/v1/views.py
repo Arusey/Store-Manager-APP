@@ -76,6 +76,7 @@ class SingleProduct(Resource):
                 }
                 ), 200)
 
+
 class Sale(Resource):
     def get(self):
         return make_response(jsonify({
