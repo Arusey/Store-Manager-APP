@@ -33,6 +33,31 @@ def token_required(func):
         return func(current_user, *args, **kwargs)
     return decorated
 
+class Product(Resource):
+    @token_required
+    def post(current_user, self):
+        if current_user["role"] != "admin":
+            return make_response(jsonify({
+                "Message": "you have no clearance for this endpoint"}
+            ), 403)
+        id = len(products) + 1
+        data = request.get_json()
+        name = data["name"]
+        category = data["category"]
+        desc = data["desc"]
+        currstock = data["currstock"]
+        minstock = data["minstock"]
+        price = data["price"]
+
+        prod = PostProduct(id, name, category, desc, currstock, minstock, price)
+        prod.add_product()
+        return make_response(jsonify({
+            "Status": "ok",
+            "Message": "Product posted successfully",
+            "Products": products
+        }
+        ), 201)
+
 class SignUp(Resource):
     def post(self):
         data = request.get_json()
