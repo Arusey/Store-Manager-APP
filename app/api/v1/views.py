@@ -65,6 +65,17 @@ class Product(Resource):
             }
             ), 200)
 
+class SingleProduct(Resource):
+    def get(self, id):
+        for product in products:
+            if product["id"] == id:
+                return make_response(jsonify({
+                    "Status": "ok",
+                    "Message": "Product ID blah blah",
+                    "Product": product
+                }
+                ), 200)
+
 class Sale(Resource):
     def get(self):
         return make_response(jsonify({
