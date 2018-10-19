@@ -1,7 +1,7 @@
 from flask import Flask, Blueprint
 from flask_restful import Api, Resource
 from .views import SignUp, Login, Product, Sale, SingleProduct, SingleSale
-myblue = Blueprint("api", __name__, url_prefix="/storemanager/api/v1")
+myblue = Blueprint("api", __name__, url_prefix="/api/v1")
 
 api = Api(myblue)
 api.add_resource(SignUp, '/auth/signup')

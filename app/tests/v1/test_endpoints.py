@@ -18,7 +18,7 @@ class TestEndpoints(unittest.TestCase):
             "role": "admin"
         })
         admin_signup = self.test_client.post(
-            "/storemanager/api/v1/auth/signup",
+            "/api/v1/auth/signup",
             data=self.user_admin_details, headers={
                 'content-type': 'application/json'})
         self.user_attendant_details = json.dumps({
@@ -27,7 +27,7 @@ class TestEndpoints(unittest.TestCase):
                 "password": "brian",
                 "role": "attendant"
             })
-        attendant_signup = self.test_client.post("/storemanager/api/v1/auth/signup",
+        attendant_signup = self.test_client.post("/api/v1/auth/signup",
                                                      data=self.user_attendant_details,
                                                      headers={
                                                         'content-type': 'application/json'
@@ -36,7 +36,7 @@ class TestEndpoints(unittest.TestCase):
             "email": "kevin@email.com",
             "password": "kevin"
         })
-        admin_login = self.test_client.post("/storemanager/api/v1/auth/login",
+        admin_login = self.test_client.post("/api/v1/auth/login",
                                             data=self.login_admin, headers={
                                                 'content-type': 'application/json'
                                             })
@@ -45,7 +45,7 @@ class TestEndpoints(unittest.TestCase):
             "email": "brian@email.com",
             "password": "brian"
         })
-        attendant_login = self.test_client.post("/storemanager/api/v1/auth/login",
+        attendant_login = self.test_client.post("/api/v1/auth/login",
                                                 data=self.login_attendant,
                                                 headers={
                                                     'content-type': 'application/json'
@@ -57,7 +57,7 @@ class TestEndpoints(unittest.TestCase):
         collapse()
         # self.app_context.pop()
     def test_signup(self):
-        response = self.test_client.post("/storemanager/api/v1/auth/signup",
+        response = self.test_client.post("/api/v1/auth/signup",
                                          data=self.user_admin_details,
                                          content_type='application/json')
         self.assertEqual(response.status_code, 201)
@@ -68,7 +68,7 @@ class TestEndpoints(unittest.TestCase):
                 "password": ""
             }
         )
-        response = self.test_client.post("storemanager/api/v1/auth/login",
+        response = self.test_client.post("/api/v1/auth/login",
                                          data=data,
                                          content_type='application/json')
         self.assertEqual(response.status_code, 401)
@@ -77,14 +77,14 @@ class TestEndpoints(unittest.TestCase):
             "email": "blah@email.com",
             "password": "blahblah"
         })
-        response = self.test_client.post("storemanager/api/v1/auth/login",
+        response = self.test_client.post("/api/v1/auth/login",
                                          data=data,
                                          content_type='application/json')
         self.assertEqual(response.status_code, 401)
 
     def test_login_granted(self):
 
-        response = self.test_client.post("/storemanager/api/v1/auth/login",
+        response = self.test_client.post("/api/v1/auth/login",
                                          data=self.login_admin,
                                          headers={
                                             'content-type': 'application/json'
@@ -92,7 +92,7 @@ class TestEndpoints(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_post_product(self):
-        response = self.test_client.post("storemanager/api/v1/products",
+        response = self.test_client.post("/api/v1/products",
                                          data=json.dumps({
                                             'name': 'minji',
                                             'category': 'food',
@@ -110,22 +110,22 @@ class TestEndpoints(unittest.TestCase):
         data = json.dumps({
             "id": 1
             })
-        response = self.test_client.post("storemanager/api/v1/sales",
+        response = self.test_client.post("/api/v1/sales",
                                          data=data, headers={
                                              'content-type': 'application/json',
                                              'x-access-token': self.token_for_attendant
                                              })
         self.assertEqual(response.status_code, 201)
     def test_get_all_sales(self):
-        response = self.test_client.get("storemanager/api/v1/sales")
+        response = self.test_client.get("/api/v1/sales")
         self.assertEqual(response.status_code, 200)
     def test_get_all_products(self):
-        response = self.test_client.get("storemanager/api/v1/products")
+        response = self.test_client.get("/api/v1/products")
         self.assertEqual(response.status_code, 200)
 
     def test_get_single_product(self):
-        response = self.test_client.get("storemanager/api/v1/products/1")
+        response = self.test_client.get("/api/v1/products/1")
         self.assertEqual(response.status_code, 200)
     def test_get_single_sale(self):
-        response = self.test_client.get("storemanager/api/v1/sales/1")
+        response = self.test_client.get("/api/v1/sales/1")
         self.assertEqual(response.status_code, 200)
