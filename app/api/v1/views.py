@@ -146,6 +146,10 @@ class Sale(Resource):
 class SignUp(Resource):
     def post(self):
         data = request.get_json()
+        if not data:
+            return make_response(jsonify({
+                        "Message": "You cannot insert empty credentials"
+            }), 405)
         id = len(users) + 1
         name = data["name"]
         email = data["email"]
