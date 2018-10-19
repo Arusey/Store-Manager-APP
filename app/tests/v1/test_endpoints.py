@@ -129,28 +129,4 @@ class TestEndpoints(unittest.TestCase):
     def test_get_single_sale(self):
         response = self.test_client.get("/api/v1/sales/1")
         self.assertEqual(response.status_code, 200)
-    def test_empty_signup(self):
-        data = json.dumps({
-            "name": "",
-            "email": "",
-            "password": "",
-            "role": ""
-        })
-        response = self.test_client.get("/api/v1/auth/signup",
-                                         data=data, headers={
-                                             'content-type': 'application/json',
-                                             'x-access-token': self.token_for_admin,
-                                             'x-access-token': self.token_for_attendant
-                                         })
-        self.assertEqual(response.status_code, 405)
-    
-    def test_valid_mail(self):
-        response = self.test_client.post("api/v1/auth/signup")
-        self.assertEqual(response.status_code, 405)
-
-    def test_user_exists(self):
-        response = self.test_client.post("api/v1/auth/signup")
-        self.assertEqual(response.status_code, 405)
-    def test_password_length(self):
-        response = self.test_client.post("api/v1/auth/signup")
-        self.assertEqual(response.status_code, 405)
+   
