@@ -111,7 +111,7 @@ class Sale(Resource):
             return make_response(jsonify({
                 "Message": "You must be an attendant to access this endpoint"
             }
-            ))
+            ), 401)
         id = data['id']
         for product in products:
             if product["currstock"] > 0:

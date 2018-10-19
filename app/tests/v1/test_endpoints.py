@@ -72,7 +72,6 @@ class TestEndpoints(unittest.TestCase):
                                          data=data,
                                          content_type='application/json')
         self.assertEqual(response.status_code, 401)
-
     def test_wrong_login(self):
         data = json.dumps({
             "email": "blah@email.com",
@@ -81,7 +80,6 @@ class TestEndpoints(unittest.TestCase):
         response = self.test_client.post("storemanager/api/v1/auth/login",
                                          data=data,
                                          content_type='application/json')
-
         self.assertEqual(response.status_code, 401)
 
     def test_login_granted(self):
