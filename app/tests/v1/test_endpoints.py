@@ -143,3 +143,14 @@ class TestEndpoints(unittest.TestCase):
                                              'x-access-token': self.token_for_attendant
                                          })
         self.assertEqual(response.status_code, 405)
+    
+    def test_valid_mail(self):
+        response = self.test_client.post("api/v1/auth/signup")
+        self.assertEqual(response.status_code, 405)
+
+    def test_user_exists(self):
+        response = self.test_client.post("api/v1/auth/signup")
+        self.assertEqual(response.status_code, 405)
+    def test_password_length(self):
+        response = self.test_client.post("api/v1/auth/signup")
+        self.assertEqual(response.status_code, 405)
