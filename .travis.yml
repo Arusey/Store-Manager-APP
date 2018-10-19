@@ -5,9 +5,8 @@ cache: pip
 install:
  - pip install -r requirements.txt
 before_script:
-   - export SECRET_KEY='secretkey'
+ - export SECRET_KEY='secretkey'
 script:
- - pytest-3.9.0 
  - pytest-3.9.0 --cov=app -v -W error::UserWarning
 after_success:
  - coveralls
