@@ -7,8 +7,8 @@ install:
 before_script:
    - export SECRET_KEY='secretkey'
 script:
- - pytest -v -W error::UserWarning
- - pytest --cov=app
+ - pytest-3.9.0 -v -W error::UserWarning
+ - pytest-3.9.0 --cov=app
 after_success:
  - coveralls
 
