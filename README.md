@@ -18,11 +18,13 @@ ii) To run the application use `export SECRET_KEY="<your secret key>"`
 iii) `flask run`
 
 The following endpoints should be working
-1. GET /products	Fetch all products
-2. GET /products/	Fetch a single product record
-3. GET /sales	Fetch all sale records
-4. GET /sales/	Fetch a single sale record
-5. POST /products	Create a product
-6. POST /sales	Create a sale order
-7. POST /auth/signup	Signup a user
-8. POST /auth/login	Login a user
+|Endpoint|functionality|contraints(requirements)|
+|-------|-------------|----------|
+|post /api/v1/auth/signup|create a user|user information|
+|post /api/v1/auth/login | login |requires authentication |
+|get /api/v1/products| get all the products| pass a token |
+|get /api/v1/products/<int:id>|return a single product| product id, pass token|
+|post /api/v1/products | create a new product entry| product data, pass token|
+|post /api/v1/sales | create a new sale| product id, pass token|
+|get /api/v1/sales | get all sales entries| pass token|
+|get/api/v1/sales/<saleid>|get a single sale entry| sale id, pass token| 
