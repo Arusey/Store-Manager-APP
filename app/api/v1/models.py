@@ -3,8 +3,10 @@ products = []
 sales = []
 
 class UserAuth():
-    def __init__(self, name, email, password, role):
-        self.name = username
+    '''model for users'''
+    def __init__(self, id, name, email, password, role):
+        self.id = id
+        self.name = name
         self.email = email
         self.password = password
         self.role = role
@@ -19,8 +21,13 @@ class UserAuth():
             'role' : self.role
         }
         users.append(user)
+    def get_mail(self):
+        return self.email
 
-class PostProduct():
+
+
+class ModelProduct():
+    '''model for products'''
     def __init__(self, id, name, category, desc, currstock, minstock, price):
         self.id = id
         self.name = name
@@ -42,9 +49,22 @@ class PostProduct():
         }
 
         products.append(payload)
-        print(products)
 
+class ModelSale():
+    '''model for sales'''
+    def __init__(self, id, saleid, product):
+        self.saleId = saleId
+        self.userId = userId
+        self.product = product
+    '''Saves a sale to sale records'''
+    def save(self):
+        new_sale = {
+                    "saleId": self.saleId,
+                    "userId": self.userId,
+                    "product": self.product
+                    }
+        sales.append(new_sale)
 def collapse():
-    users = []
-    products = []
-    sales = []
+    users.clear()
+    products.clear()
+    sales.clear()

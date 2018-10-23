@@ -6,14 +6,16 @@ import datetime
 import jwt
 import json
 
-from .models import *
-
+from .models import UserAuth, users, ModelProduct, products, sales
+from .utils import AuthValidate, ProductValidate
 
 
 def token_required(func):
+    '''creates a token'''
     @wraps(func)
     def decorated(*args, **kwargs):
         token = None
+        current_user = None
         if 'x-access-token' in request.headers:
             token = request.headers['x-access-token']
         if not token:
@@ -35,15 +37,18 @@ def token_required(func):
         return func(current_user, *args, **kwargs)
     return decorated
 
+
 class Product(Resource):
+    '''endpoint for posting a product'''
     @token_required
     def post(current_user, self):
+        data = request.get_json()
         if current_user["role"] != "admin":
             return make_response(jsonify({
                 "Message": "you have no clearance for this endpoint"}
             ), 403)
+        ProductValidate.validate_empty_products(self, data)
         id = len(products) + 1
-        data = request.get_json()
         name = data["name"]
         category = data["category"]
         desc = data["desc"]
@@ -51,24 +56,30 @@ class Product(Resource):
         minstock = data["minstock"]
         price = data["price"]
 
-        prod = PostProduct(id, name, category, desc, currstock, minstock, price)
-        prod.add_product()
+        product = ModelProduct(id, name, category, desc, currstock, minstock, price)
+        product.add_product()
         return make_response(jsonify({
             "Status": "ok",
             "Message": "Product posted successfully",
             "Products": products
         }
         ), 201)
+
+
     def get(self):
-            return make_response(jsonify({
-                "Status": "ok",
-                "Message": "All products fetched successfully",
-                "products": products
-            }
-            ), 200)
+        '''endpoint for getting all products'''
+        return make_response(jsonify({
+            "Status": "ok",
+            "Message": "All products fetched successfully",
+            "products": products
+        }
+        ), 200)
+
 
 class SingleProduct(Resource):
-    def get(self, id):
+    '''endpoint for getting a single product'''
+    @token_required
+    def get(current_user, self, id):
         for product in products:
             if product["id"] == id:
                 return make_response(jsonify({
@@ -77,26 +88,18 @@ class SingleProduct(Resource):
                     "Product": product
                 }
                 ), 200)
-class SingleSale(Resource):
-    @token_required
-    def get(current_user, self, saleid):
-        if current_user['role'] != "admin":
-            return make_response(jsonify({
-                "Message": "You cannot access this endpoint"
-            }
-            ), 401)
-        for sale in sales:
-            if saleid == sale["saleid"]:
-                return make_response(jsonify({
-                    "Status": "Sale found",
-                    "Message": "Single sale retrieved",
-                    "Sale": saleid
-                }
-                ), 200)
 
 
 class Sale(Resource):
-    def get(self):
+    '''ending for getting all sales'''
+    @token_required
+    def get(current_user, self):
+        if current_user["role"] != "admin":
+            return make_response(jsonify(
+            {
+                "Message": "you are not an admin"
+            }
+            ), 401)
         return make_response(jsonify({
             "Status": "ok",
             "Message": "All products fetched successfully",
@@ -104,6 +107,8 @@ class Sale(Resource):
         }
         ))
 
+
+    '''Endpoint for posting a sale'''
     @token_required
     def post(current_user, self):
         total = 0
@@ -113,15 +118,16 @@ class Sale(Resource):
             return make_response(jsonify({
                 "Message": "You must be an attendant to access this endpoint"
             }
-            ), 401)
+            ))
         id = data['id']
         for product in products:
             if product["currstock"] > 0:
-                if product["id"] == id:
+                if product["id"] == id or id:
                     sale = {
                         "saleid": len(sales) + 1,
                         "product": product
                     }
+                    userId = current_user["id"]
                     product["currstock"] = product["currstock"] - 1
                     sales.append(sale)
                     for sale in sales:
@@ -145,27 +151,47 @@ class Sale(Resource):
 
                 }), 404)
 
+
+class SingleSale(Resource):
+    '''endpoint for getting a single sale'''
+    @token_required
+    def get(current_user, self, saleid):
+        if current_user['role'] != "admin":
+            return make_response(jsonify({
+                "Message": "You cannot access this endpoint"
+            }
+            ), 401)
+        for sale in sales:
+            if saleid == sale["saleid"]:
+                return make_response(jsonify({
+                    "Status": "Sale found",
+                    "Message": "Single sale retrieved",
+                    "Sale": saleid
+                }
+                ), 200)
+
+
 class SignUp(Resource):
+    '''endpoint for signing up a user'''
     def post(self):
         data = request.get_json()
+
         if not data:
-            return make_response(jsonify({
-                        "Message": "You cannot insert empty credentials"
-            }), 405)
+            return make_response(jsonify(
+            {
+                "Message": "Please enter details"
+            }
+            ), 400)
+        AuthValidate.validate_empty_data(self, data)
+        AuthValidate.validate_data(self, data)
+        AuthValidate.validate_details(self, data)
         id = len(users) + 1
         name = data["name"]
         email = data["email"]
         password = data["password"]
         role = data["role"]
-
-        user = {
-            "id": id,
-            "name": name,
-            "email": email,
-            "password": password,
-            "role": role
-        }
-        users.append(user)
+        user = UserAuth(id ,name, email, password, role)
+        user.save_user()
         return make_response(jsonify({
             "Status": "ok",
             "Message": "user successfully created",
@@ -173,7 +199,9 @@ class SignUp(Resource):
         }
         ), 201)
 
+
 class Login(Resource):
+    '''endpoint for logging in a user'''
     def post(self):
         data = request.get_json()
         if not data:
