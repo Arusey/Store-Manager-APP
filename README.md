@@ -26,6 +26,14 @@ Take the following steps:
 1. Clone the repository i.e `$ git clone https://github.com/Arusey/Store-Manager-APP.git`
 1. Install requirements `$ pip install -r requirements.txt`
 
+Documentation
+=============
+https://documenter.getpostman.com/view/4790487/RWgwRFeP
+
+Heroku Deploy
+=============
+https://storemanagerkevin.herokuapp.com/
+
 
 Running Tests
 =============
