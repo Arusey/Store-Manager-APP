@@ -34,3 +34,5 @@ The following endpoints should be working
 |post /api/v1/sales | create a new sale| product id, pass token|
 |get /api/v1/sales | get all sales entries| pass token|
 |get/api/v1/sales/<saleid>|get a single sale entry| sale id, pass token| 
+  
+  
