@@ -48,14 +48,14 @@ The following endpoints should be working:
   
  Technologies used include:
  ==========================
- Python
- Flask 
- Flask-Restful
- Json Web Tokens
- Heroku
- Travis CI
- Coveralls
- Code Climate
+ * Python
+ * Flask 
+ * Flask-Restful
+ * Json Web Tokens
+ * Heroku
+ * Travis CI
+ * Coveralls
+ * Code Climate
  
  
  
