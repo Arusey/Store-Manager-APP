@@ -35,6 +35,7 @@ After completing the following, it is time to run the app
 1. `flask run`
 
 The following endpoints should be working:
+
 |Endpoint|functionality|contraints(requirements)|
 |-------|-------------|----------|
 |post /api/v1/auth/signup|create a user|user information|
