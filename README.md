@@ -8,16 +8,22 @@ This is a Store Manager Application
 To Run and test this application
 Take the following steps:
 1. Create a virtual enviroment with the command `$ virtualenv -p python3 env`
-2. Activate the virtual enviroment with the command `$ source env/bin/activate`
-3. Ensure you have installed GIT
-4. Clone the repository i.e `$ git clone https://github.com/Arusey/Store-Manager-APP.git`
-5. Install requirements `$ pip install -r requirements.txt`
+1. Activate the virtual enviroment with the command `$ source env/bin/activate`
+1. Ensure you have installed GIT
+1. Clone the repository i.e `$ git clone https://github.com/Arusey/Store-Manager-APP.git`
+1. Install requirements `$ pip install -r requirements.txt`
+
 After completing the following, it is time to run the app
-i) To run the tests use `$ pytest -v`
-ii) To run the application use `export SECRET_KEY="<your secret key>"`
-iii) `flask run`
+1. To run the tests use `$ pytest -v`
+1. To run the application use `export SECRET_KEY="<your secret key>"`
+1. `flask run`
+
+
+
 
 The following endpoints should be working
+
+
 |Endpoint|functionality|contraints(requirements)|
 |-------|-------------|----------|
 |post /api/v1/auth/signup|create a user|user information|
