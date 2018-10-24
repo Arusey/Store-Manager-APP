@@ -51,7 +51,7 @@ class Product(Resource):
             return make_response(jsonify({
                 "Message": "Kindly ensure you have inserted your details"
             }), 400)
-        ProductValidate.validate_empty_products(self, data)
+        ProductValidate.validate_key_products(self, data)
         id = len(products) + 1
         name = data["name"]
         category = data["category"]
@@ -211,6 +211,7 @@ class SignUp(Resource):
                 "Message": "Please enter details"
             }
             ), 400)
+        AuthValidate.validate_key_name(self, data)
         AuthValidate.validate_empty_data(self, data)
         AuthValidate.validate_data(self, data)
         AuthValidate.validate_details(self, data)

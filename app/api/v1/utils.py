@@ -15,6 +15,21 @@ class AuthValidate(object):
         if type(data["name"]) is not str or type(data["email"]) is not str or type(data["password"]) is not str or type(data["role"]) is not str:
             Response = "You cannot insert an integer"
             abort(400, Response)
+    def validate_key_name(self, data):
+        if not "name" in data:
+            Response = "Key name is missing"
+            abort(400, Response)
+        if not "email" in data:
+            Response = "Key email is missing"
+            abort(400, Response)
+        if not "password" in data:
+            Response = "Key password is missing"
+            abort(400, Response)
+        if not "role" in data:
+            Response = "Key role is missing"
+            abort(400, Response)
+
+
     def validate_details(self, data):
         valid_mail = validate_email(data["email"])
         for user in users:
@@ -54,9 +69,24 @@ class AuthValidate(object):
 
 
 class ProductValidate(object):
-    def validate_empty_products(self, data):
-        if data["name"] == "" or data["category"] == "" or data["description"] == "" or data["currentstock"] == "" or data["minimumstock"] == "" or data["price"] == "":
-            Response = "You have to insert a product stored"
+    def validate_key_products(self, data):
+        if not "name" in data:
+            Response = "key name is missing"
+            abort(400, Response)
+        if not "category" in data:
+            Response = "Key category is missing"
+            abort(400, Response)
+        if not "description" in data:
+            Response = "Key description is missing"
+            abort(400, Response)
+        if not "currentstock" in data:
+            Response = "Key currentstock is missing"
+            abort(400, Response)
+        if not "minimumstock" in data:
+            Response = "Key miinimumstock is missing"
+            abort(400, Response)
+        if not "price" in data:
+            Response = "Key price is missing"
             abort(400, Response)
         for product in products:
             if data["name"] == product["name"]:
@@ -67,4 +97,8 @@ class ProductValidate(object):
             abort(400, Response)
         if " " in data["category"]:
             Response = "Remove space in category"
+            abort(400, Response)
+
+        if data["name"] == "" or data["category"] == "" or data["description"] == "" or data["currentstock"] == "" or data["minimumstock"] == "" or data["price"] == "":
+            Response = "You have to insert a product stored"
             abort(400, Response)

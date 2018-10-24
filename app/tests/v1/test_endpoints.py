@@ -345,3 +345,10 @@ class TestEndpoints(unittest.TestCase):
                                         'x-access-token': self.token_for_admin
                                          })
         self.assertEqual(response.status_code, 404)
+    def test_no_key_products(self):
+        data = json.dumps({
+
+        })
+        response = self.test_client.post("api/v1/auth/products",
+                                         data=data,
+                                         )
