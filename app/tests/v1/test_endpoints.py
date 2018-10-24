@@ -1,4 +1,5 @@
 
+
 import unittest
 import json
 from app import create_app
@@ -58,9 +59,9 @@ class TestEndpoints(unittest.TestCase):
         self.post_products = json.dumps({
             "name": "minji",
             "category": "food",
-            "desc": "great food",
-            "currstock": 20,
-            "minstock": 2,
+            "description": "great food",
+            "currentstock": 20,
+            "minimumstock": 2,
             "price": 30
         })
         self.create_sale = json.dumps({
@@ -70,9 +71,9 @@ class TestEndpoints(unittest.TestCase):
                               data=json.dumps({
                                     'name': 'minji',
                                     'category': 'food',
-                                    'desc': 'great food',
-                                    'currstock': 200,
-                                    'minstock': 20,
+                                    'description': 'great food',
+                                    'currentstock': 200,
+                                    'minimumstock': 20,
                                     'price': 30
                                     }
                                         ),
@@ -166,9 +167,9 @@ class TestEndpoints(unittest.TestCase):
                                          data=json.dumps({
                                             'name': 'Madondo',
                                             'category': 'food',
-                                            'desc': 'great food',
-                                            'currstock': 200,
-                                            'minstock': 20,
+                                            'description': 'great food',
+                                            'currentstock': 200,
+                                            'minimumstock': 20,
                                             'price': 30
                                             }),
                                          headers={
@@ -315,9 +316,9 @@ class TestEndpoints(unittest.TestCase):
         data = json.dumps({
                 'name': 'minji',
                 'category': 'food',
-                'desc': 'great food',
-                'currstock': 200,
-                'minstock': 20,
+                'description': 'great food',
+                'currentstock': 200,
+                'minimumstock': 20,
                 'price': 30
         })
         response = self.test_client.post("api/v1/auth/products",
@@ -332,9 +333,9 @@ class TestEndpoints(unittest.TestCase):
         data = json.dumps({
                 'name': "",
                 'category': "food",
-                'desc': "",
-                'currstock': "",
-                'minstock': "",
+                'description': "",
+                'currentstock': "",
+                'minimumstock': "",
                 'price': ""
         })
         response = self.test_client.post("api/v1/auth/products",

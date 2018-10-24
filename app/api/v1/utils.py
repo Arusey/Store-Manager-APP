@@ -39,14 +39,32 @@ class AuthValidate(object):
         elif not re.search("^.*(?=.*[@#$%^&+=]).*$", data["password"]):
             Response = "Password must have a special charater"
             abort(400, Response)
+        if " " in data["email"]:
+            Response = "Remove space in email"
+            abort(400, Response)
+        if " " in data["name"]:
+            Response = "Remove space in name"
+            abort(400, Response)
+        if " " in data["password"]:
+            Response = "Remove space in password"
+            abort(400, Response)
+        if " " in data["role"]:
+            Response = "Remove space in role"
+            abort(400, Response)
 
 
 class ProductValidate(object):
     def validate_empty_products(self, data):
-        if data["name"] == "" or data["category"] == "" or data["desc"] == "" or data["currstock"] == "" or data["minstock"] == "" or data["price"] == "":
+        if data["name"] == "" or data["category"] == "" or data["description"] == "" or data["currentstock"] == "" or data["minimumstock"] == "" or data["price"] == "":
             Response = "You have to insert a product stored"
             abort(400, Response)
         for product in products:
             if data["name"] == product["name"]:
                 Response = "Product already registered"
                 abort(404, Response)
+        if " " in data["name"]:
+            Response = "Remove space in name"
+            abort(400, Response)
+        if " " in data["category"]:
+            Response = "Remove space in category"
+            abort(400, Response)

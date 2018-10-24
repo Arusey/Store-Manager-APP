@@ -28,13 +28,13 @@ class UserAuth():
 
 class ModelProduct():
     '''model for products'''
-    def __init__(self, id, name, category, desc, currstock, minstock, price):
+    def __init__(self, id, name, category, description, currentstock, minimumstock, price):
         self.id = id
         self.name = name
         self.category = category
-        self.desc = desc
-        self.currstock = currstock
-        self.minstock = minstock
+        self.description = description
+        self.currentstock = currentstock
+        self.minimumstock = minimumstock
         self.price = price
 
     def add_product(self):
@@ -42,9 +42,9 @@ class ModelProduct():
         'id' : self.id,
         'name': self.name,
         'category' : self.category,
-        'desc': self.desc,
-        'currstock' : self.currstock,
-        'minstock' : self.minstock,
+        'description': self.description,
+        'currentstock' : self.currentstock,
+        'minimumstock' : self.minimumstock,
         'price': self.price
         }
 
@@ -52,15 +52,15 @@ class ModelProduct():
 
 class ModelSale():
     '''model for sales'''
-    def __init__(self, id, saleid, product):
+    def __init__(self, id, saleId, product):
         self.saleId = saleId
-        self.userId = userId
+        # self.userId = userId
         self.product = product
     '''Saves a sale to sale records'''
     def save(self):
         new_sale = {
                     "saleId": self.saleId,
-                    "userId": self.userId,
+                    # "userId": self.userId,
                     "product": self.product
                     }
         sales.append(new_sale)

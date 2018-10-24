@@ -51,12 +51,12 @@ class Product(Resource):
         id = len(products) + 1
         name = data["name"]
         category = data["category"]
-        desc = data["desc"]
-        currstock = data["currstock"]
-        minstock = data["minstock"]
+        description = data["description"]
+        currentstock = data["currentstock"]
+        minimumstock = data["minimumstock"]
         price = data["price"]
 
-        product = ModelProduct(id, name, category, desc, currstock, minstock, price)
+        product = ModelProduct(id, name, category, description, currentstock, minimumstock, price)
         product.add_product()
         return make_response(jsonify({
             "Status": "ok",
@@ -68,6 +68,10 @@ class Product(Resource):
 
     def get(self):
         '''endpoint for getting all products'''
+        if len(products) == 0:
+            return  make_response(jsonify({
+                "Message": "No products have been posted yet"
+            }), 404)
         return make_response(jsonify({
             "Status": "ok",
             "Message": "All products fetched successfully",
@@ -80,6 +84,12 @@ class SingleProduct(Resource):
     '''endpoint for getting a single product'''
     @token_required
     def get(current_user, self, id):
+        if len(products) == 0:
+            return make_response(jsonify(
+                {
+                    "Message": "No products have been posted yet"
+                }
+            ), 404)
         for product in products:
             if product["id"] == id:
                 return make_response(jsonify({
@@ -88,6 +98,11 @@ class SingleProduct(Resource):
                     "Product": product
                 }
                 ), 200)
+            return make_response(jsonify(
+                {
+                    "Message": "The product id given is non-existent"
+                }
+            ), 404)
 
 
 class Sale(Resource):
@@ -100,12 +115,17 @@ class Sale(Resource):
                 "Message": "you are not an admin"
             }
             ), 401)
+        if len(sales) == 0:
+            return make_response(jsonify({
+                "Message": "no sales have been made yet"
+            }), 404)
+
         return make_response(jsonify({
             "Status": "ok",
             "Message": "All products fetched successfully",
             "sales": sales
         }
-        ))
+        ), 200)
 
 
     '''Endpoint for posting a sale'''
@@ -113,22 +133,26 @@ class Sale(Resource):
     def post(current_user, self):
         total = 0
         data = request.get_json()
-        print(data)
+        # print(data)
         if current_user["role"] != "attendant":
             return make_response(jsonify({
                 "Message": "You must be an attendant to access this endpoint"
             }
-            ))
+            ) , 403)
         id = data['id']
         for product in products:
-            if product["currstock"] > 0:
-                if product["id"] == id or id:
+            if product["id"] != id:
+                return make_response(jsonify({
+                    "Message": "product does not exist"
+                                  }), 404)
+            if product["currentstock"] > 0:
+                if product["id"] == id:
                     sale = {
                         "saleid": len(sales) + 1,
                         "product": product
                     }
                     userId = current_user["id"]
-                    product["currstock"] = product["currstock"] - 1
+                    product["currentstock"] = product["currentstock"] - 1
                     sales.append(sale)
                     for sale in sales:
                         if product["id"] in sale.values():
@@ -156,11 +180,11 @@ class SingleSale(Resource):
     '''endpoint for getting a single sale'''
     @token_required
     def get(current_user, self, saleid):
-        if current_user['role'] != "admin":
+
+        if len(sales) == 0:
             return make_response(jsonify({
-                "Message": "You cannot access this endpoint"
-            }
-            ), 401)
+                "Message": "No sales have been made yet"
+            }), 404)
         for sale in sales:
             if saleid == sale["saleid"]:
                 return make_response(jsonify({
