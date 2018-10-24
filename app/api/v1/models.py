@@ -28,24 +28,21 @@ class UserAuth():
 
 class ModelProduct():
     '''model for products'''
-    def __init__(self, id, name, category, description, currentstock, minimumstock, price):
-        self.id = id
-        self.name = name
-        self.category = category
-        self.description = description
-        self.currentstock = currentstock
-        self.minimumstock = minimumstock
-        self.price = price
+    def __init__(self, data):
+        self.id = len(products) + 1
+        self.data = data
+        
+        
 
     def add_product(self):
         payload = {
         'id' : self.id,
-        'name': self.name,
-        'category' : self.category,
-        'description': self.description,
-        'currentstock' : self.currentstock,
-        'minimumstock' : self.minimumstock,
-        'price': self.price
+        'name': self.data["name"],
+        'category' : self.data["category"],
+        'description': self.data["description"],
+        'currentstock' : self.data["currentstock"],
+        'minimumstock' : self.data["minimumstock"],
+        'price': self.data["price"]
         }
 
         products.append(payload)

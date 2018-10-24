@@ -61,7 +61,7 @@ class ProductValidate(object):
         for product in products:
             if data["name"] == product["name"]:
                 Response = "Product already registered"
-                abort(404, Response)
+                abort(406, Response)
         if " " in data["name"]:
             Response = "Remove space in name"
             abort(400, Response)

@@ -39,14 +39,18 @@ def token_required(func):
 
 
 class Product(Resource):
-    '''endpoint for posting a product'''
     @token_required
     def post(current_user, self):
-        data = request.get_json()
-        if current_user["role"] != "admin":
+        '''endpoint for posting a product'''
+        if current_user and current_user["role"] != "admin":
             return make_response(jsonify({
-                "Message": "you have no clearance for this endpoint"}
+                "Message": "you must be an admin endpoint"}
             ), 403)
+        data = request.get_json()
+        if not data:
+            return make_response(jsonify({
+                "Message": "Kindly ensure you have inserted your details"
+            }), 400)
         ProductValidate.validate_empty_products(self, data)
         id = len(products) + 1
         name = data["name"]
@@ -56,7 +60,7 @@ class Product(Resource):
         minimumstock = data["minimumstock"]
         price = data["price"]
 
-        product = ModelProduct(id, name, category, description, currentstock, minimumstock, price)
+        product = ModelProduct(data)
         product.add_product()
         return make_response(jsonify({
             "Status": "ok",
@@ -91,18 +95,18 @@ class SingleProduct(Resource):
                 }
             ), 404)
         for product in products:
-            if product["id"] == id:
+            if int(id) == product["id"]:
                 return make_response(jsonify({
                     "Status": "ok",
-                    "Message": "Product ID blah blah",
+                    "Message": "Product fetched",
                     "Product": product
                 }
                 ), 200)
-            return make_response(jsonify(
-                {
-                    "Message": "The product id given is non-existent"
-                }
-            ), 404)
+        return make_response(jsonify(
+            {
+                "Message": "The product id given is non-existent"
+            }
+        ), 404)
 
 
 class Sale(Resource):
@@ -119,6 +123,7 @@ class Sale(Resource):
             return make_response(jsonify({
                 "Message": "no sales have been made yet"
             }), 404)
+
 
         return make_response(jsonify({
             "Status": "ok",
@@ -214,14 +219,12 @@ class SignUp(Resource):
         email = data["email"]
         password = data["password"]
         role = data["role"]
-        user = UserAuth(id ,name, email, password, role)
+        user = UserAuth(id, name, email, password, role)
         user.save_user()
         return make_response(jsonify({
             "Status": "ok",
             "Message": "user successfully created",
-            "user": users
-        }
-        ), 201)
+            "user": user.get_mail() + " registration successful"}), 201)
 
 
 class Login(Resource):
