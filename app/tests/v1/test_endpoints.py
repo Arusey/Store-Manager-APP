@@ -352,3 +352,4 @@ class TestEndpoints(unittest.TestCase):
         response = self.test_client.post("api/v1/auth/products",
                                          data=data,
                                          )
+    
