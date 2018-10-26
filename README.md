@@ -40,6 +40,7 @@ Running Tests
 After completing the following, it is time to run the app
 1. To run the tests use `$ pytest -v`
 1. To run the application use `export SECRET_KEY="<your secret key>"`
+1. `export FLASK_APP=run.py'
 1. `flask run`
 
 The following endpoints should be working:
